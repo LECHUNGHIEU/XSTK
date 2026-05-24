@@ -1,33 +1,35 @@
-# Transactional Retail Dataset of Electronics Store – Statistical Analysis using R
+# BÀI TẬP LỚN XÁC SUẤT THỐNG KÊ  
+## Phân tích dữ liệu giao dịch cửa hàng điện tử bằng ngôn ngữ R
 
-## Overview
-This project is developed for the course **Probability and Statistics** and focuses on analyzing a transactional retail dataset from an electronics store. The objective is to apply statistical methods and inferential analysis techniques using **R programming language** to evaluate customer behavior, delivery costs, seasonal effects, and build predictive models.
+## 1. Giới thiệu đề tài
 
-The dataset contains information from **500 customer transactions** including order information, delivery charges, warehouse locations, seasonal data, and customer satisfaction indicators.
+Đề tài được thực hiện trong học phần **Xác suất và Thống kê**, với mục tiêu ứng dụng các phương pháp thống kê và phân tích dữ liệu bằng ngôn ngữ **R** để khai thác bộ dữ liệu giao dịch của một cửa hàng điện tử (*Transactional Retail Dataset of Electronics Store*).
 
----
-
-## Project Objectives
-- Perform data preprocessing and cleaning
-- Conduct descriptive statistical analysis
-- Visualize data distributions and relationships
-- Apply inferential statistics methods:
-  - Confidence Interval (CI)
-  - Hypothesis Testing
-  - One-sample and Two-sample Tests
-  - ANOVA (One-way & Two-way)
-- Build regression models:
-  - Simple Linear Regression
-  - Multiple Linear Regression
-- Evaluate effects of seasonality and expedited delivery on shipping cost
+Thông qua quá trình xử lý dữ liệu, trực quan hóa và xây dựng mô hình thống kê, đề tài hướng đến việc phân tích hành vi khách hàng, đánh giá các yếu tố ảnh hưởng đến chi phí vận chuyển và xây dựng mô hình dự báo phục vụ cho bài toán thương mại điện tử.
 
 ---
 
-## Repository Structure
+## 2. Mục tiêu nghiên cứu
+
+Đề tài tập trung thực hiện các nội dung sau:
+
+- Tiền xử lý và làm sạch dữ liệu
+- Phân tích thống kê mô tả
+- Trực quan hóa dữ liệu
+- Thực hiện thống kê suy diễn
+- Xây dựng khoảng tin cậy (Confidence Interval)
+- Kiểm định giả thuyết thống kê
+- Phân tích phương sai ANOVA
+- Xây dựng mô hình hồi quy tuyến tính đơn và hồi quy tuyến tính bội
+- Đánh giá tác động của mùa vụ và loại hình vận chuyển đến chi phí giao hàng
+
+---
+
+## 3. Cấu trúc thư mục
 
 ```text
 XSTK/
-│── btl_xstk_2.R          # Main R source code
-│── dirty_data.csv        # Original transaction dataset
-│── missing_data.csv      # Dataset containing missing values
-│── warehouses.csv        # Warehouse information dataset
+│── btl_xstk_2.R          # File mã nguồn R thực hiện toàn bộ quá trình phân tích
+│── dirty_data.csv        # Bộ dữ liệu giao dịch ban đầu
+│── missing_data.csv      # Dữ liệu chứa giá trị thiếu dùng cho xử lý dữ liệu
+│── warehouses.csv        # Dữ liệu thông tin kho hàng

@@ -52,12 +52,12 @@ boxplot (order_total~season,new_data,main="Biểu đồ tổng giá trị đơn 
 
 #tạo hàm và chuyển ngoại lai thành NA
 rm.out <- function (x,na.rm = TRUE,...){
-qnt <- quantile(x,probs = c(.25,.75),na.rm = na.rm,...)
-H <- 1.5*IQR(x,na.rm = na.rm)
-y <- x
-y [x<(qnt[1] - H )] <- NA
-y [x>(qnt[2] + H )] <- NA
-y}
+  qnt <- quantile(x,probs = c(.25,.75),na.rm = na.rm,...)
+  H <- 1.5*IQR(x,na.rm = na.rm)
+  y <- x
+  y [x<(qnt[1] - H )] <- NA
+  y [x>(qnt[2] + H )] <- NA
+  y}
 
 #Áp dụng hàm rm.out vừa tạo để loại bỏ các giá trị ngoại lai từ cột order_total để làm sạch dữ liệu
 Spring_data = subset (new_data ,new_data $ season == "Spring")
@@ -216,6 +216,50 @@ qqline(Winter_data$order_total, col = "red")
 
 qqnorm(av_residual)
 qqline(av_residual, col = "red")
+
+# ==================================================================
+# [MỞ RỘNG 1 - NÂNG CẤP] KIỂM ĐỊNH PHI THAM SỐ CHUYÊN SÂU
+# ==================================================================
+cat("\n--- THỰC HIỆN KIỂM ĐỊNH PHI THAM SỐ NÂNG CẤP ---\n")
+
+# Cài đặt thư viện rstatix để tính Effect Size (Bỏ dấu # để chạy 1 lần nếu máy chưa có)
+# install.packages("rstatix")
+library(rstatix)
+
+# 1. THỐNG KÊ MÔ TẢ ĐẶC THÙ (DÀNH CHO PHI THAM SỐ)
+cat("\n[1.1] Thống kê Trung vị (Median) và IQR chi phí giao hàng:\n")
+# Tính Median và IQR để so sánh độ hội tụ của dữ liệu thay vì Mean
+summary_delivery <- aggregate(delivery_charges ~ is_expedited_delivery, data = new_data_1, 
+                              FUN = function(x) c(Median = median(x), IQR = IQR(x)))
+print(summary_delivery)
+
+cat("\n[1.2] Thống kê Trung vị (Median) và IQR tổng đơn hàng theo mùa:\n")
+summary_season <- aggregate(order_total ~ season, data = new_data_1, 
+                            FUN = function(x) c(Median = median(x), IQR = IQR(x)))
+print(summary_season)
+
+# 2. KIỂM ĐỊNH WILCOXON & ĐO LƯỜNG EFFECT SIZE
+cat("\n[2] Kiểm định Wilcoxon (So sánh 2 nhóm) & Kích thước hiệu ứng:\n")
+wilcox_test_result <- wilcox.test(delivery_charges ~ is_expedited_delivery, 
+                                  data = new_data_1, alternative = "two.sided")
+print(wilcox_test_result)
+
+# Tính Effect Size (r) cho Wilcoxon
+# Quy ước: r < 0.3 (Nhỏ) | 0.3 <= r < 0.5 (Trung bình) | r >= 0.5 (Lớn)
+wilcox_eff <- wilcox_effsize(new_data_1, delivery_charges ~ is_expedited_delivery)
+print("--- Độ lớn của sự khác biệt (Effect Size 'r') ---")
+print(wilcox_eff)
+
+# 3. KIỂM ĐỊNH KRUSKAL-WALLIS & ĐO LƯỜNG EFFECT SIZE
+cat("\n[3] Kiểm định Kruskal-Wallis (So sánh nhiều nhóm) & Kích thước hiệu ứng:\n")
+kruskal_test_result <- kruskal.test(order_total ~ season, data = new_data_1)
+print(kruskal_test_result)
+
+# Tính Effect Size (eta squared) cho Kruskal-Wallis
+kruskal_eff <- kruskal_effsize(new_data_1, order_total ~ season)
+print("--- Độ lớn của sự tác động (Effect Size 'eta2') ---")
+print(kruskal_eff)
+# ==================================================================
 
 new_data_1$season <- as.factor(new_data_1$season)
 new_data_1$is_expedited_delivery <- as.factor(new_data_1$is_expedited_delivery)
